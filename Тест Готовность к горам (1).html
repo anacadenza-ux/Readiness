@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- PROTECTED: meta type -->
+    <meta name="type" value="app" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест KPI готовности к горам</title>
+    <meta property="og:title" content="Тест KPI готовности к горам">
+    <meta property="og:description" content="20 вопросов в 4 блоках: оцените физическую форму, опыт, здоровье и психологию перед горами.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#F5F2EC;
+            --surface:#FFFFFF;
+            --ink:#1C1B19;
+            --muted:#6B675F;
+            --line:#E4DFD5;
+            --accent:#B4471F;
+            --accent-soft:#F6E6DE;
+            --green:#3F7D4E;
+            --yellow:#B98A12;
+            --red:#B4371F;
+            --r:14px;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            background:var(--bg);
+            color:var(--ink);
+            font-family:'Manrope',system-ui,sans-serif;
+            line-height:1.55;
+            -webkit-font-smoothing:antialiased;
+        }
+        .wrap{max-width:820px;margin:0 auto;padding:48px 24px 96px}
+        h1,h2,h3{margin:0;color:var(--ink)}
+        .serif{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em}
+        .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+        .eyebrow i{color:var(--accent)}
+        .muted{color:var(--muted)}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:15px;padding:15px 26px;border-radius:999px;transition:background .2s,transform .2s,opacity .2s,color .2s;}
+        .btn-primary{background:var(--ink);color:#fff}
+        .btn-primary i{color:#fff}
+        .btn-primary:hover{background:var(--accent)}
+        .btn-primary:disabled{opacity:.35;cursor:not-allowed;background:var(--ink)}
+        .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+        .btn-ghost i{color:var(--ink)}
+        .btn-ghost:hover{border-color:var(--ink)}
+        .fade{animation:fade .35s ease}
+        @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+        /* Intro */
+        .hero h1{font-size:clamp(36px,6vw,56px);line-height:1.08;margin:18px 0 20px}
+        .hero p.lead{font-size:18px;color:var(--muted);max-width:620px;margin:0 0 36px}
+        .rules{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px;display:flex;gap:16px;margin-bottom:40px}
+        .rules i{color:var(--accent);font-size:18px;margin-top:3px}
+        .rules p{margin:0;color:var(--ink)}
+        .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:44px}
+        .bcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+        .bicon{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+        .bicon i{color:var(--accent);font-size:17px}
+        .bcard h3{font-size:16px;margin-bottom:6px}
+        .bcard p{margin:0;font-size:14px;color:var(--muted)}
+        .meta-row{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+        .meta-row span{font-size:14px;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+        .meta-row span i{color:var(--muted)}
+
+        /* Quiz */
+        .topbar{position:sticky;top:0;z-index:10;background:rgba(245,242,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+        .topbar-in{max-width:820px;margin:0 auto;padding:14px 24px}
+        .steps{display:flex;gap:8px;margin-bottom:12px}
+        .step{flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border:1px solid transparent;background:transparent;font-family:inherit;transition:all .2s;min-width:0}
+        .step i{color:var(--muted);font-size:13px}
+        .step .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .step.active{background:var(--surface);border-color:var(--line);color:var(--ink)}
+        .step.active i{color:var(--accent)}
+        .step.done i{color:var(--green)}
+        .pbar{height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+        .pbar div{height:100%;background:var(--accent);transition:width .35s ease;width:0}
+        .ptext{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:8px;font-weight:600}
+        .block-head{margin:40px 0 32px}
+        .block-head h2{font-size:clamp(28px,4.5vw,38px);margin:12px 0 10px;line-height:1.15}
+        .block-head p{margin:0;color:var(--muted);font-size:16px}
+        .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px;margin-bottom:16px}
+        .q-num{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:8px}
+        .q h3{font-size:17px;font-weight:700;line-height:1.45;margin-bottom:18px}
+        .opts{display:flex;flex-direction:column;gap:8px}
+        .opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#FCFBF8;cursor:pointer;font:inherit;font-size:15px;color:var(--ink);transition:border-color .2s,background .2s}
+        .opt:hover{border-color:#BDB6A8}
+        .opt .dot{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid #C9C2B5;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+        .opt .pts{flex:none;margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--bg);padding:3px 9px;border-radius:999px;white-space:nowrap}
+        .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+        .opt.sel .dot{border-color:var(--accent);background:var(--accent)}
+        .opt.sel .dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+        .opt.sel .pts{background:var(--accent);color:#fff}
+        .navrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:32px;flex-wrap:wrap}
+        .navhint{font-size:14px;color:var(--muted)}
+        .subtotal{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--ink)}
+        .subtotal i{color:var(--accent)}
+
+        /* Result */
+        .score-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px;margin:24px 0 20px;display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center}
+        .ring{width:170px;height:170px;position:relative}
+        .ring svg{transform:rotate(-90deg)}
+        .ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .ring .val b{font-family:'Fraunces',serif;font-size:52px;line-height:1;color:var(--ink)}
+        .ring .val span{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px}
+        .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700}
+        .badge i{font-size:9px}
+        .score-card h2{font-size:30px;margin:14px 0 10px;line-height:1.15}
+        .score-card p{margin:0;color:var(--muted)}
+        .section-title{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:44px 0 16px}
+        .steps-list{display:grid;gap:12px}
+        .ns{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;display:flex;gap:16px}
+        .ns .bicon{margin:0;flex:none}
+        .ns h4{margin:0 0 4px;font-size:15px;color:var(--ink)}
+        .ns p{margin:0;font-size:14px;color:var(--muted)}
+        .brow{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:12px}
+        .brow-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+        .brow-top .bicon{margin:0;width:38px;height:38px}
+        .brow-top h4{margin:0;font-size:15px;flex:1;color:var(--ink)}
+        .brow-top .s{font-weight:800;font-size:15px;color:var(--ink)}
+        .brow-top .s small{color:var(--muted);font-weight:600}
+        .bbar{height:8px;background:var(--bg);border-radius:8px;overflow:hidden}
+        .bbar div{height:100%;border-radius:8px;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+        .bnote{font-size:13px;color:var(--muted);margin-top:10px}
+        .insights{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .ins{border-radius:var(--r);padding:20px 22px;border:1px solid var(--line);background:var(--surface)}
+        .ins .k{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;gap:8px;align-items:center;margin-bottom:6px}
+        .ins h4{margin:0 0 4px;font-size:16px;color:var(--ink)}
+        .ins p{margin:0;font-size:14px;color:var(--muted)}
+        .scale{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .lvl{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);opacity:.55}
+        .lvl.on{opacity:1;border-color:var(--ink)}
+        .lvl b{display:block;font-size:14px;color:var(--ink)}
+        .lvl span{font-size:13px;color:var(--muted)}
+        .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:44px}
+
+        @media (max-width:640px){
+            .wrap{padding:32px 18px 80px}
+            .grid4,.insights,.scale{grid-template-columns:1fr}
+            .score-card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:28px 22px}
+            .step .lbl{display:none}
+            .step{justify-content:center}
+            .q{padding:20px}
+            .opt .pts{display:none}
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+</head>
+<body>
+    <div id="top"></div>
+    <main id="app"></main>
+    <script>
+    const BLOCKS = [
+      {title:'Физическая форма', icon:'fa-dumbbell', desc:'Оценивает готовность ваших мышц, сердца и сосудов к специфической горной нагрузке.', qs:[
+        {q:'Сколько кардио/аэробных тренировок вы проводите в неделю?', a:['0 раз (не тренируюсь регулярно).','1–2 раза в неделю (бег, плавание, велосипед от случая к случаю).','3–4 раза в неделю стабильно.','5 и более раз, тренировки встроены в мой образ жизни.']},
+        {q:'Как ваш организм переносит длительные монотонные нагрузки (например, ходьбу в гору)?', a:['Быстро устаю, появляется сильная одышка, пульс зашкаливает.','Могу идти пару часов, но потом нужен долгий отдых. Мышцы сильно забиваются.','Уверенно иду 4–6 часов в спокойном темпе, усталость адекватная.','Могу работать на рельефе весь световой день (8+ часов), на следующий день готов продолжать.']},
+        {q:'Как быстро восстанавливается ваш пульс после крутого подъема?', a:['Сердце колотится еще 10–15 минут, долго не могу отдышаться.','Нужно 5–7 минут, чтобы пульс пришел в норму и я мог(ла) говорить без одышки.','Восстанавливаюсь за 2–3 минуты отдыха.','Пульс падает до рабочей нормы меньше чем за минуту, я быстро готов(а) идти дальше.']},
+        {q:'Как ваши ноги (особенно колени и бедра) реагируют на долгий спуск?', a:['Колени начинают болеть почти сразу, ноги дрожат, спуск превращается в мучение.','К концу спуска мышцы «деревянные», на следующий день тяжело ходить по лестнице.','Чувствую сильную усталость, но суставы не болят, контролирую каждый шаг.','Ноги железные. Спускаюсь уверенно, мышцы отлично держат эксцентрическую нагрузку.']},
+        {q:'Как ваша спина и кор переносят вес рюкзака (10–15 кг)?', a:['Спина начинает ныть и болеть уже через час.','Терпимо, но к вечеру поясница «отваливается», хочется быстрее скинуть вес.','Чувствую нагрузку, но мышцы кора справляются, сильного дискомфорта нет.','Практически не замечаю рюкзак, спина и пресс отлично стабилизируют тело на рельефе.']}
+      ]},
+      {title:'Знания о горах и опыт', icon:'fa-mountain', desc:'Оценивает вашу техническую базу и понимание законов горной среды.', qs:[
+        {q:'Каков ваш максимальный горный опыт на данный момент?', a:['Никогда не был(а) в горах.','Несколько простых треков (без ночевок на большой высоте).','Был(а) выше 4000 м или на базовых технических маршрутах (Эльбрус, Казбек, Монблан).','Проходил(а) маршруты выше 7000 м или был(а) на вершинах 8000 м и выше.']},
+        {q:'Как вы обычно переносите высоту (акклиматизация)?', a:['Не знаю, никогда не проверял(а).','Тяжело: сильная головная боль, тошнота, бессонница уже на 3000–4000 м.','Терпимо: бывает легкое недомогание, но оно проходит по мере набора высоты.','Отлично: мой организм быстро адаптируется, я знаю свои рабочие протоколы акклиматизации.']},
+        {q:'Насколько хорошо вы разбираетесь в горной экипировке (концепция слоев)?', a:['Не понимаю разницы между мембраной и софтшеллом, одеваюсь «чтобы было тепло».','Знаю теорию трех слоев, но на практике часто либо потею, либо мерзну.','Уверенно комбинирую слои одежды под погоду, умею не перегреваться на ходу.','Идеально подбираю снаряжение, знаю вес и характеристики каждой своей вещи.']},
+        {q:'Каков ваш уровень владения альпинистским снаряжением?', a:['Никогда не надевал(а) кошки и систему.','Ходил(а) с гидом, он всё пристегивал, я просто выполнял(а) команды.','Умею ходить в кошках, пользоваться ледорубом, жумаром и знаю базовые узлы.','Уверенно работаю в связке, могу организовать страховку и знаю техники самозадержания на льду.']},
+        {q:'Как вы оцениваете объективные риски на маршруте?', a:['Полностью полагаюсь на гида, сам(а) за погодой и рельефом не слежу.','Могу заметить, что погода портится, но не знаю, что с этим делать.','Понимаю, где есть риск камнепада или лавины, слежу за прогнозом погоды.','Умею читать рельеф, погоду и состояние снега, могу самостоятельно принять решение о развороте группы.']}
+      ]},
+      {title:'Здоровье и восстановление', icon:'fa-heart-pulse', desc:'Оценивает ваш фундамент: дефициты, иммунитет и способность организма к регенерации.', qs:[
+        {q:'Как вы следите за ресурсами своего тела (чекапы, анализы)?', a:['Никак. Иду к врачу, только если что-то сильно болит.','Сдаю базовые анализы раз в пару лет, иногда пью витамины из аптеки.','Регулярно мониторю ферритин, витамин D и другие базовые маркеры перед сезоном.','Использую биохакинг: у меня выстроена система сапплементации под нагрузки.']},
+        {q:'Как ваш иммунитет реагирует на стресс и переохлаждение?', a:['Часто простужаюсь, стоит только промокнуть или замерзнуть.','Могу заболеть после сильного истощения или долгого перелета.','Болею редко, организм хорошо справляется с перепадами температур.','Иммунитет как броня. Даже в суровых условиях экспедиции остаюсь здоровым.']},
+        {q:'Как вы питаетесь и пьете во время длительных физических нагрузок?', a:['Пью, только когда пересохло в горле, ем обычную еду на привалах.','Беру с собой батончики и воду, но часто забываю есть на ходу.','Знаю про изотоники, регулярно пью и ем углеводы по часам, чтобы не поймать «стену».','У меня есть четкий протокол питания (гели, электролиты), умею заставлять себя есть даже при горной анорексии.']},
+        {q:'Как вы спите после тяжелой тренировки или на высоте?', a:['Сплю ужасно, просыпаюсь разбитым, на высоте вообще не могу уснуть.','Засыпаю с трудом, сон поверхностный, часто просыпаюсь.','Сплю нормально, если сильно устал(а), утром чувствую себя восстановленным.','Отлично сплю в любых условиях (в палатке, на высоте), знаю техники расслабления.']},
+        {q:'Есть ли у вас хронические проблемы, мешающие нагрузкам?', a:['Да, есть серьезные ограничения (астма, проблемы с сердцем, старые травмы суставов), которые часто обостряются.','Есть мелкие травмы, которые иногда ноют при нагрузках.','Здоров(а), травм нет или они полностью залечены и не беспокоят.','Идеальное здоровье, регулярно прохожу профилактику у спортивного врача/остеопата.']}
+      ]},
+      {title:'Психология и стрессоустойчивость', icon:'fa-brain', desc:'Оценивает вашу способность сохранять холодный ум и работать в команде.', qs:[
+        {q:'Как вы реагируете на непредсказуемые ситуации (резко испортилась погода, сломалось снаряжение)?', a:['Начинаю паниковать, злиться на себя или окружающих, хочу всё бросить.','Сильно стрессую, но терплю, если кто-то берет ситуацию в свои руки.','Сохраняю холодный ум, адаптируюсь к ситуации, контролирую эмоции.','Действую четко по протоколам безопасности, могу взять на себя лидерство и успокоить группу.']},
+        {q:'Как вы переносите бытовой дискомфорт (холод, отсутствие душа, сон в палатке на камнях)?', a:['Ненавижу это. Дискомфорт лишает меня сил и портит настроение.','Могу потерпеть пару дней, но потом начинаю сильно раздражаться.','Отношусь спокойно, это часть горной игры.','Чувствую себя в палатке как дома, умею создавать уют и восстанавливаться в любых условиях.']},
+        {q:'Ваша реакция на конфликты внутри группы на фоне усталости?', a:['Вспыхиваю, могу накричать или, наоборот, замыкаюсь в себе и обижаюсь.','Стараюсь избегать конфликтов, но напряжение в группе сильно давит на меня.','Стараюсь сглаживать углы, понимаю, что люди раздражены из-за гипоксии.','Выступаю медиатором, умею разрядить обстановку шуткой или конструктивным диалогом.']},
+        {q:'Готовы ли вы отказаться от вершины в 100 метрах от нее, если гид сказал, что идти дальше опасно?', a:['Буду спорить до последнего. Я заплатил(а) деньги и потратил(а) столько сил!','Подчинюсь, но буду долго злиться и считать восхождение провальным.','Расстроюсь, но приму решение. Безопасность важнее.','Развернусь без колебаний. Гора стояла миллионы лет и еще постоит, а жизнь у меня одна.']},
+        {q:'Какова ваша главная мотивация идти в горы?', a:['Доказать кому-то свою крутизну, сделать красивое фото для соцсетей.','Преодолеть себя, поставить галочку в списке достижений.','Насладиться процессом, природой и проверить свои физические границы.','Горы — это мой путь развития. Я кайфую от системы подготовки, дисциплины и глубокого контакта с собой.']}
+      ]}
+    ];
+
+    const LEVELS = [
+      {min:0,max:20,name:'Стартовый уровень',sub:'Новичок',color:'var(--green)',bg:'#E4EFE6',
+       text:'Вы находитесь в самом начале своего горного пути. Ваш организм пока не адаптирован к специфическим высотным нагрузкам, а знаний о безопасности недостаточно для самостоятельных решений. Это абсолютно нормально — все с этого начинают!',
+       steps:[
+        {i:'fa-person-running',t:'Фокус на базу',d:'Начните с регулярных кардиотренировок (бег, плавание) 2–3 раза в неделю.'},
+        {i:'fa-stethoscope',t:'Здоровье',d:'Обязательно пройдите базовый чекап (Шаг 2 нашего курса).'},
+        {i:'fa-flag',t:'Цель',d:'Ваша первая гора — комфортный трекинг без тяжелых рюкзаков (например, трек к базовому лагерю Эвереста).'}
+       ]},
+      {min:21,max:40,name:'Средний уровень',sub:'Уверенный любитель',color:'var(--yellow)',bg:'#F5ECD3',
+       text:'Есть база, но не хватает регулярности и разнообразия нагрузок. Вы уже понимаете, что такое горы, ваш организм знаком с физической работой, а психика готова к дискомфорту. Однако для безопасных восхождений на серьезные вершины вам пока не хватает системности.',
+       steps:[
+        {i:'fa-dumbbell',t:'Тренировки',d:'Следуйте тренировочному плану из шага 3. Обязательно добавьте силовые тренировки на ноги и кор.'},
+        {i:'fa-arrow-trend-up',t:'Специфика',d:'Увеличивайте вертикальный набор на тренировках до 1000 м.'},
+        {i:'fa-mountain',t:'Опыт',d:'Ближайшая зона роста — вершины уровня Эльбруса или Казбека с опытным гидом, а также отработка навыков хождения в кошках.'}
+       ]},
+      {min:41,max:60,name:'Продвинутый уровень',sub:'Эксперт',color:'var(--red)',bg:'#F6E1DA',
+       text:'Вы уверенно ориентируетесь в горах, знаете риски, умеете управлять ресурсами своего тела и психологически устойчивы. Вы готовы к серьезным экспедициям и высотному альпинизму.',
+       steps:[
+        {i:'fa-screwdriver-wrench',t:'Навыки',d:'Осваивайте сложные технические маршруты (работа со снаряжением на льду и скалах).'},
+        {i:'fa-flask',t:'Биохакинг',d:'Внедряйте продвинутые протоколы лонжевити и спортивной нутрициологии для выносливости на экстремальных высотах (7000+ м).'},
+        {i:'fa-flag-checkered',t:'Цель',d:'Семитысячники, восьмитысячники и технически сложные вершины (Ама-Даблам, Маттерхорн).'}
+       ]}
+    ];
+
+    const BLOCK_NOTES = [
+      ['Зона риска: начните с регулярного кардио и укрепления ног.','Хорошая база, добавьте силовые и вертикальный набор.','Отличная форма для серьезных маршрутов.'],
+      ['Опыта пока мало: ходите с гидом и изучайте основы.','База есть, отрабатывайте технику со снаряжением.','Сильная техническая и теоретическая подготовка.'],
+      ['Фундамент требует внимания: чекап и режим восстановления.','Здоровье в порядке, систематизируйте питание и сон.','Организм отлично восстанавливается.'],
+      ['Работайте над стрессоустойчивостью и мотивацией.','Неплохая устойчивость, развивайте командные навыки.','Холодная голова и правильные приоритеты.']
+    ];
+
+    const STORE = 'mountain-kpi-v1';
+    let state = {view:'intro', block:0, answers:{}};
+    try{ const s = JSON.parse(localStorage.getItem(STORE)); if(s && s.answers) state = s; }catch(e){}
+    const save = () => { try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} };
+
+    const app = document.getElementById('app');
+    const topEl = document.getElementById('top');
+    const ptsWord = n => n===1?'балл':(n>=2&&n<=4?'балла':'баллов');
+    const key = (b,q) => b+'-'+q;
+    const blockScore = b => BLOCKS[b].qs.reduce((s,_,q)=>s+(state.answers[key(b,q)]??0),0);
+    const blockAnswered = b => BLOCKS[b].qs.filter((_,q)=>state.answers[key(b,q)]!==undefined).length;
+    const totalAnswered = () => Object.keys(state.answers).length;
+    const total = () => BLOCKS.reduce((s,_,b)=>s+blockScore(b),0);
+    const levelOf = t => LEVELS.find(l=>t>=l.min&&t<=l.max);
+
+    function render(){
+      save();
+      if(state.view==='intro') renderIntro();
+      else if(state.view==='quiz') renderQuiz();
+      else renderResult();
+      window.scrollTo({top:0});
+    }
+
+    function renderIntro(){
+      topEl.innerHTML='';
+      const started = totalAnswered()>0;
+      app.innerHTML = `<div class="wrap fade hero">
+        <span class="eyebrow"><i class="fa-solid fa-chart-simple"></i>Практика</span>
+        <h1 class="serif">Тест KPI готовности к горам</h1>
+        <p class="lead">20 вопросов в четырех блоках помогут честно оценить вашу текущую форму, опыт, здоровье и психологическую готовность к высоте.</p>
+        <div class="rules"><i class="fa-solid fa-circle-info"></i>
+          <p>Внимательно прочитайте каждый вопрос и выберите один вариант ответа, который наиболее честно описывает вашу текущую ситуацию. Баллы считаются автоматически — в конце вы увидите общий результат и разбивку по блокам.</p></div>
+        <div class="grid4">${BLOCKS.map((b,i)=>`<div class="bcard"><div class="bicon"><i class="fa-solid ${b.icon}"></i></div>
+          <h3>Блок ${i+1}. ${b.title}</h3><p>${b.desc}</p></div>`).join('')}</div>
+        <div class="meta-row">
+          <button class="btn btn-primary" id="start">${started?'Продолжить тест':'Начать тест'} <i class="fa-solid fa-arrow-right"></i></button>
+          ${started?`<button class="btn btn-ghost" id="reset"><i class="fa-solid fa-rotate-left"></i>Начать заново</button>`:''}
+          <span><i class="fa-regular fa-clock"></i>~7 минут</span>
+          <span><i class="fa-solid fa-list-check"></i>Максимум 60 баллов</span>
+        </div></div>`;
+      document.getElementById('start').onclick=()=>{
+        state.view='quiz';
+        if(started){ const f = BLOCKS.findIndex((_,b)=>blockAnswered(b)<5); state.block = f<0?3:f; }
+        render();
+      };
+      const r=document.getElementById('reset'); if(r) r.onclick=()=>{state={view:'quiz',block:0,answers:{}};render();};
+    }
+
+    function renderTop(){
+      const n = totalAnswered();
+      topEl.innerHTML = `<div class="topbar"><div class="topbar-in">
+        <div class="steps">${BLOCKS.map((b,i)=>{
+          const done = blockAnswered(i)===5;
+          return `<button class="step ${i===state.block?'active':''} ${done?'done':''}" data-step="${i}" title="${b.title}">
+            <i class="fa-solid ${done&&i!==state.block?'fa-circle-check':b.icon}"></i><span class="lbl">${b.title}</span></button>`;}).join('')}</div>
+        <div class="pbar"><div style="width:${n/20*100}%"></div></div>
+        <div class="ptext"><span>Отвечено ${n} из 20</span><span>${Math.round(n/20*100)}%</span></div>
+      </div></div>`;
+      topEl.querySelectorAll('[data-step]').forEach(el=>el.onclick=()=>{state.block=+el.dataset.step;render();});
+    }
+
+    function renderQuiz(){
+      renderTop();
+      const bi = state.block, b = BLOCKS[bi], last = bi===BLOCKS.length-1;
+      app.innerHTML = `<div class="wrap fade" style="padding-top:8px">
+        <div class="block-head">
+          <span class="eyebrow"><i class="fa-solid ${b.icon}"></i>Блок ${bi+1} из 4</span>
+          <h2 class="serif">${b.title}</h2><p>${b.desc}</p>
+        </div>
+        ${b.qs.map((q,qi)=>`<div class="q"><div class="q-num">ВОПРОС ${bi+1}.${qi+1}</div><h3>${q.q}</h3>
+          <div class="opts">${q.a.map((a,ai)=>`<button class="opt ${state.answers[key(bi,qi)]===ai?'sel':''}" data-q="${qi}" data-a="${ai}">
+            <span class="dot"></span><span>${a}</span><span class="pts">${ai} ${ptsWord(ai)}</span></button>`).join('')}</div></div>`).join('')}
+        <div class="navrow">
+          <button class="btn btn-ghost" id="back"><i class="fa-solid fa-arrow-left"></i>${bi===0?'К описанию':'Назад'}</button>
+          <span class="subtotal" id="sub"></span>
+          <button class="btn btn-primary" id="next"></button>
+        </div></div>`;
+      const updateNav = () => {
+        const cnt = blockAnswered(bi), allDone = totalAnswered()===20;
+        const next = document.getElementById('next');
+        document.getElementById('sub').innerHTML = cnt===5
+          ? `<i class="fa-solid fa-calculator"></i>Блок: ${blockScore(bi)} / 15`
+          : `<span class="navhint">Ответьте на все вопросы блока (${cnt}/5)</span>`;
+        if(last){
+          next.innerHTML = 'Показать результаты <i class="fa-solid fa-chart-simple"></i>';
+          next.disabled = !allDone;
+          if(cnt===5 && !allDone) document.getElementById('sub').innerHTML = `<span class="navhint">Остались вопросы в других блоках</span>`;
+        } else {
+          next.innerHTML = 'Следующий блок <i class="fa-solid fa-arrow-right"></i>';
+          next.disabled = cnt<5;
+        }
+      };
+      app.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{
+        const qi=+el.dataset.q, ai=+el.dataset.a;
+        state.answers[key(bi,qi)]=ai; save();
+        el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.toggle('sel',o===el));
+        renderTop(); updateNav();
+        const nextQ = el.closest('.q').nextElementSibling;
+        if(nextQ && nextQ.classList.contains('q') && state.answers[key(bi,qi+1)]===undefined){
+          setTimeout(()=>{ const y = nextQ.getBoundingClientRect().top + window.scrollY - 130; window.scrollTo({top:y,behavior:'smooth'}); },180);
+        }
+      });
+      document.getElementById('back').onclick=()=>{ if(bi===0) state.view='intro'; else state.block--; render(); };
+      document.getElementById('next').onclick=()=>{
+        if(last){ if(totalAnswered()===20){ state.view='result'; render(); } else { state.block = BLOCKS.findIndex((_,b)=>blockAnswered(b)<5); render(); } }
+        else { state.block++; render(); }
+      };
+      updateNav();
+    }
+
+    function renderResult(){
+      topEl.innerHTML='';
+      const t = total(), L = levelOf(t), li = LEVELS.indexOf(L);
+      const scores = BLOCKS.map((_,b)=>blockScore(b));
+      const maxS = Math.max(...scores), minS = Math.min(...scores);
+      const strong = scores.indexOf(maxS), weak = scores.indexOf(minS);
+      const C = 2*Math.PI*74;
+      const tierOf = s => s<=5?0:(s<=10?1:2);
+      const tierColor = ['var(--red)','var(--yellow)','var(--green)'];
+      app.innerHTML = `<div class="wrap fade">
+        <span class="eyebrow"><i class="fa-solid fa-chart-simple"></i>Результаты теста</span>
+        <div class="score-card">
+          <div class="ring">
+            <svg width="170" height="170"><circle cx="85" cy="85" r="74" fill="none" stroke="#EEEAE2" stroke-width="12"/>
+            <circle id="arc" cx="85" cy="85" r="74" fill="none" stroke="${L.color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" style="transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)"/></svg>
+            <div class="val"><b id="cnt">0</b><span>из 60 баллов</span></div>
+          </div>
+          <div>
+            <span class="badge" style="background:${L.bg};color:${L.color}"><i class="fa-solid fa-circle" style="color:${L.color}"></i>${L.min}–${L.max} баллов</span>
+            <h2 class="serif">${L.name} <span class="muted" style="font-weight:500">· ${L.sub}</span></h2>
+            <p>${L.text}</p>
+          </div>
+        </div>
+        <div class="scale">${LEVELS.map((l,i)=>`<div class="lvl ${i===li?'on':''}"><b><i class="fa-solid fa-circle" style="color:${l.color};font-size:8px;margin-right:6px;vertical-align:middle"></i>${l.sub}</b><span>${l.min}–${l.max} баллов</span></div>`).join('')}</div>
+
+        <div class="section-title">Ваш следующий шаг</div>
+        <div class="steps-list">${L.steps.map(s=>`<div class="ns"><div class="bicon"><i class="fa-solid ${s.i}"></i></div><div><h4>${s.t}</h4><p>${s.d}</p></div></div>`).join('')}</div>
+
+        <div class="section-title">Разбивка по блокам</div>
+        ${BLOCKS.map((b,i)=>`<div class="brow"><div class="brow-top"><div class="bicon"><i class="fa-solid ${b.icon}"></i></div>
+          <h4>${b.title}</h4><span class="s">${scores[i]} <small>/ 15</small></span></div>
+          <div class="bbar"><div data-w="${scores[i]/15*100}" style="background:${tierColor[tierOf(scores[i])]}"></div></div>
+          <div class="bnote">${BLOCK_NOTES[i][tierOf(scores[i])]}</div></div>`).join('')}
+
+        ${maxS!==minS?`<div class="section-title">Сильные и слабые стороны</div>
+        <div class="insights">
+          <div class="ins"><div class="k" style="color:var(--green)"><i class="fa-solid fa-arrow-up" style="color:var(--green)"></i>Сильнее всего</div><h4>${BLOCKS[strong].title}</h4><p>${scores[strong]} из 15 баллов — ваша опора в подготовке.</p></div>
+          <div class="ins"><div class="k" style="color:var(--accent)"><i class="fa-solid fa-arrow-down" style="color:var(--accent)"></i>Зона роста</div><h4>${BLOCKS[weak].title}</h4><p>${scores[weak]} из 15 баллов — начните подготовку с этого блока.</p></div>
+        </div>`:''}
+
+        <div class="actions">
+          <button class="btn btn-primary" id="restart"><i class="fa-solid fa-rotate-left"></i>Пройти заново</button>
+          <button class="btn btn-ghost" id="edit"><i class="fa-solid fa-pen"></i>Изменить ответы</button>
+        </div></div>`;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        document.getElementById('arc').style.strokeDashoffset = C*(1-t/60);
+        app.querySelectorAll('[data-w]').forEach(el=>el.style.width=el.dataset.w+'%');
+      }));
+      const cnt = document.getElementById('cnt'); const st = performance.now();
+      (function tick(now){ const p=Math.min((now-st)/1000,1); cnt.textContent=Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(tick); })(st);
+      document.getElementById('restart').onclick=()=>{state={view:'intro',block:0,answers:{}};render();};
+      document.getElementById('edit').onclick=()=>{state.view='quiz';state.block=0;render();};
+    }
+
+    render();
+    </script>
+</body>
+</html>
